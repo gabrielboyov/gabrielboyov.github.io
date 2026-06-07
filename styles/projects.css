@@ -18,20 +18,24 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth sliding curves */
 }
 
-/* Internal wrapper to make text disappear cleanly when sliding */
-.sidebar-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 100%;
-    transition: opacity 0.2s ease;
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;        /* LOCKS THE SIZE: Prevents the sidebar from ever squishing */
+    background-color: #1a1a1e;
+    border-right: 1px solid #29292e;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box; /* Ensures padding is calculated inside the 250px width */
 }
 
-/* THE COLLAPSED STATE */
+/* Update your collapsed rule as well to make sure it plays nice with the lock */
 .sidebar.collapsed {
     width: 0;
-    padding: 25px 0; /* Keeps vertical layout but squishes width */
+    padding: 25px 0;
     border-right: none;
+    flex-shrink: 0; /* Keeps it locked at 0 when closed */
 }
 
 /* Hide text when collapsed */
@@ -147,6 +151,54 @@ hr {
     padding: 10px 20px;
     border-radius: 4px;
 }
+
+.code-link:hover {
+    background-color: #29292e;
+    color: #00b37e;
+}
+
+
+.project-card {
+    background-color: #202024;
+    border: 1px solid #29292e;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.project-card h3 {
+    margin-top: 0;
+    color: #ffffff;
+}
+
+.project-image {
+    width: 75%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.hierarchy-image {
+    width: 25%;
+    height: auto;
+    max-width: 600px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.video-embed {
+    border: 1px solid #29292e;
+    border-radius: 6px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(5px); }

@@ -65,6 +65,27 @@ footer {
     font-size: 1.2rem;
 }
 
+/* Container to make sure the embedded code behaves nicely */
+.gist {
+    width: 100%;
+    max-height: 500px; /* Limits the height so it doesn't stretch forever */
+    overflow-y: auto;  /* Adds a smooth scrollbar inside the card if code is long */
+    border-radius: 6px;
+    border: 1px solid #29292e;
+    margin-top: 15px;
+}
+
+/* Styles the custom code box container */
+.code-window {
+    background-color: #1a1a1e !important; /* Forces dark background matching your sidebar */
+    border: 1px solid #29292e;
+    border-radius: 6px;
+    padding: 15px;
+    max-height: 400px; /* Gives it a neat bounding box */
+    overflow: auto; /* Enables vertical and horizontal scrollbars automatically */
+    font-size: 0.9rem;
+}
+
 /* =========
    STATES
    ========= */
@@ -72,3 +93,10 @@ footer {
 a:hover {
     text-decoration: underline;
 }
+
+/* =========
+   IMPORTS
+   =========
+*/
+
+@import url('https://cdn.jsdelivr.net/gh/claudiomancuso/gist-dark-theme@master/gist-dark-theme.css');
