@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Upgraded Sidebar Layout with Collapse Animation
+   ========================================================================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevents awkward scrolling during transitions */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #1a1a1e;
+    border-right: 1px solid #29292e;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth sliding curves */
+}
+
+/* Internal wrapper to make text disappear cleanly when sliding */
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    transition: opacity 0.2s ease;
+}
+
+/* THE COLLAPSED STATE */
+.sidebar.collapsed {
+    width: 0;
+    padding: 25px 0; /* Keeps vertical layout but squishes width */
+    border-right: none;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed .sidebar-content {
+    opacity: 0;
+    pointer-events: none; /* Stops users from accidentally clicking invisible links */
+}
+
+/* Toggle Buttons */
+.toggle-btn, .floating-toggle-btn {
+    background: none;
+    border: none;
+    color: #00b37e;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.2s;
+}
+
+.toggle-btn:hover, .floating-toggle-btn:hover {
+    color: #ffffff;
+}
+
+.toggle-btn {
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
+/* Floating button that appears only when sidebar vanishes */
+.floating-toggle-btn {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #1a1a1e;
+    border: 1px solid #29292e;
+    border-radius: 4px;
+    z-index: 10;
+}
+
+.floating-toggle-btn.visible {
+    display: block;
+}
+
+/* Sidebar Buttons */
+.sidebar-btn {
+    background: none;
+    border: none;
+    color: #a8a8b3;
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-btn:hover {
+    background-color: #202024;
+    color: #ffffff;
+}
+
+.sidebar-btn.active {
+    background-color: #202024;
+    color: #00b37e;
+    font-weight: bold;
+    border-left: 3px solid #00b37e;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+/* Main Screen Wrapper adjusting for absolute positioning */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #121214;
+    position: relative; 
+}
+
+/* If the layout text looks too close to the floating trigger when collapsed */
+.sidebar.collapsed + .main-content {
+    padding-left: 70px; 
+}
+
+.project-meta {
+    color: #7c7c8a;
+    font-size: 0.9rem;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #29292e;
+    margin: 20px 0;
+}
+
+.project-view {
+    display: none;
+}
+
+.project-view.active-view {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.code-link {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #202024;
+    border: 1px solid #29292e;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
