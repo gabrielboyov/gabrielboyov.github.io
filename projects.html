@@ -21,9 +21,35 @@
             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
             
             <div class="sidebar-content">
-                <h3>My Projects</h3>
-                <button class="sidebar-btn active" onclick="showProject('project-inventory-and-shop')">Inventory & Shop System</button>
-                <button class="sidebar-btn" onclick="showProject('project-modcomplete')">Module & Service Referral Autocomplete Plugin</button>
+                <div class="archive-heading">
+                    <div>
+                        <p class="eyebrow">Portfolio</p>
+                        <h3>Project Archive</h3>
+                    </div>
+                    <span class="project-count" id="projectCount" aria-live="polite">2 projects</span>
+                </div>
+
+                <label class="search-label" for="projectSearch">Search projects</label>
+                <input class="project-search" id="projectSearch" type="search" placeholder="Search by name or skill..." autocomplete="off">
+
+                <div class="category-filter" aria-label="Filter projects by category">
+                    <button class="category-btn active" type="button" data-category="all">All projects</button>
+                    <button class="category-btn" type="button" data-category="systems">Systems</button>
+                    <button class="category-btn" type="button" data-category="tools">Tools</button>
+                    <button class="category-btn" type="button" data-category="data">Data &amp; persistence</button>
+                </div>
+
+                <nav class="project-list" aria-label="Projects">
+                    <button class="sidebar-btn active" type="button" data-project="project-inventory-and-shop" data-category="systems data" data-search="modular data-saving inventory shop system profilestore luau roblox" onclick="showProject('project-inventory-and-shop')">
+                        <span>Inventory &amp; Shop System</span>
+                        <small>Systems · Data</small>
+                    </button>
+                    <button class="sidebar-btn" type="button" data-project="project-modcomplete" data-category="tools" data-search="module service referral autocomplete plugin luau roblox developer tool" onclick="showProject('project-modcomplete')">
+                        <span>Referral Autocomplete Plugin</span>
+                        <small>Tools</small>
+                    </button>
+                </nav>
+                <p class="empty-results" id="emptyResults" hidden>No projects match your search.</p>
                 
                 <div class="sidebar-footer">
                     <a href="index.html">← Back to Home</a>
@@ -35,13 +61,13 @@
             <button class="floating-toggle-btn" id="floatingToggle" onclick="toggleSidebar()">☰</button>
 
             <div id="project-inventory-and-shop" class="project-view active-view">
-                <h1>Modular & Data-Saving Inventory & Shop System</h1>
+                <h1>Modular &amp; Data-Saving Inventory &amp; Shop System</h1>
                 <p>An inventory and shop system with modular code utilizing ProfileStores for safe Data-Saving.</p>
                 <img class="project-image" src="images/projects/project2/sample.png" alt="Screenshot of the inventory and shop system">
 
                 <hr>
 
-                <h2>Videos:</h2>
+                <h2>Videos</h2>
 
                 <h3>Project Showcase:</h3>
                 <iframe class="video-embed" width="560" height="315" src="https://www.youtube.com/embed/9yMm8c1Guio?si=SxqfLxbhUugH3P-N" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><br>
@@ -49,10 +75,10 @@
                 <h3>Project Brief Explanation:</h3>
                 <iframe class="video-embed" width="560" height="315" src="https://www.youtube.com/embed/WL103zLBxuI?si=fZ9EeKYx3YTvB7E3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><br>
 
-                <h2>Code:</h2>
+                <h2>Code</h2>
 
                 <h3>Hierarchy:</h3>
-                <img class="hierarchy-image" src="images/projects/project2/hierarchy.png" alt="Diagram showcasing the modular structure of the inventory and shop system" class="project-image"><br>
+                <img class="hierarchy-image" src="images/projects/project2/hierarchy.png" alt="Diagram showcasing the modular structure of the inventory and shop system">
 
                 <h3>Server Code:</h3>
                 <pre class="code-window"><code id="inventory-server-code" class="language-lua">Loading code from gist...</code></pre>
@@ -67,14 +93,16 @@
                 <img class="project-image" src="images/projects/project1/thumbnail.png" alt="Thumbnail of the plugin">
                 <p>A plugin that features autocompletion suggestions for modules and services. A simple prefix like "::" is typed, and as you type, the plugin will search through existing modules to suggest.</p>
                 <img class="project-image" src="images/projects/project1/sample.png" alt="Screenshot of usage">
-                <a class="code-link" href="https://devforum.roblox.com/t/require-autocomplete-a-module-and-service-referral-autocomplete-plugin/4621627" target="_blank">More info on the Roblox DevForum →</a>
+                <a class="code-link" href="https://devforum.roblox.com/t/require-autocomplete-a-module-and-service-referral-autocomplete-plugin/4621627" target="_blank" rel="noopener noreferrer">More info on the Roblox DevForum →</a>
             </div>
 
         </main>
     </div>
 
     <script>
-        // Tab switching logic
+        let selectedCategory = 'all';
+
+        // Show one project and keep the selected project button in sync.
         function showProject(projectId) {
             const views = document.querySelectorAll('.project-view');
             views.forEach(view => view.classList.remove('active-view'));
@@ -84,9 +112,37 @@
 
             document.getElementById(projectId).classList.add('active-view');
 
-            const clickedBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(projectId));
+            const clickedBtn = Array.from(buttons).find(btn => btn.dataset.project === projectId);
             if (clickedBtn) clickedBtn.classList.add('active');
         }
+
+        function filterProjects() {
+            const searchTerm = document.getElementById('projectSearch').value.trim().toLowerCase();
+            const buttons = document.querySelectorAll('.sidebar-btn');
+            let visibleCount = 0;
+
+            buttons.forEach(button => {
+                const matchesCategory = selectedCategory === 'all' || button.dataset.category.split(' ').includes(selectedCategory);
+                const matchesSearch = !searchTerm || button.dataset.search.includes(searchTerm);
+                const isVisible = matchesCategory && matchesSearch;
+
+                button.hidden = !isVisible;
+                if (isVisible) visibleCount += 1;
+            });
+
+            document.getElementById('projectCount').textContent = `${visibleCount} ${visibleCount === 1 ? 'project' : 'projects'}`;
+            document.getElementById('emptyResults').hidden = visibleCount !== 0;
+        }
+
+        document.getElementById('projectSearch').addEventListener('input', filterProjects);
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelector('.category-btn.active').classList.remove('active');
+                button.classList.add('active');
+                selectedCategory = button.dataset.category;
+                filterProjects();
+            });
+        });
 
         // Sidebar open/close logic
         function toggleSidebar() {
@@ -109,9 +165,17 @@
         // Function to fetch raw text from a URL and inject it into a code block
         function loadRemoteCode(gistRawUrl, targetElementId) {
             fetch(gistRawUrl)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Request failed with status ${response.status}`);
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     const codeBlock = document.getElementById(targetElementId);
+                    if (!codeBlock) {
+                        throw new Error(`Code target not found: ${targetElementId}`);
+                    }
                     
                     // 1. Inject the raw text into the <code> tag safely
                     codeBlock.textContent = data;
@@ -121,7 +185,10 @@
                 })
                 .catch(error => {
                     console.error('Error fetching code:', error);
-                    document.getElementById(targetElementId).textContent = '-- Error loading code sample. Please try refreshing. --';
+                    const codeBlock = document.getElementById(targetElementId);
+                    if (codeBlock) {
+                        codeBlock.textContent = '-- Code sample unavailable. Please try again later. --';
+                    }
                 });
         }
 

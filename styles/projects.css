@@ -1,206 +1,310 @@
-/* ==========================================================================
-   Upgraded Sidebar Layout with Collapse Animation
-   ========================================================================== */
-
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    overflow-x: hidden; /* Prevents awkward scrolling during transitions */
 }
 
-/* Sidebar Styles */
 .sidebar {
-    width: 250px;
-    background-color: #1a1a1e;
-    border-right: 1px solid #29292e;
-    padding: 25px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 1.5rem;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth sliding curves */
+    transition: width 220ms ease, padding 220ms ease;
+    width: 280px;
 }
 
-/* Sidebar Styles */
-.sidebar {
-    width: 250px;
-    flex-shrink: 0;        /* LOCKS THE SIZE: Prevents the sidebar from ever squishing */
-    background-color: #1a1a1e;
-    border-right: 1px solid #29292e;
-    padding: 25px;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box; /* Ensures padding is calculated inside the 250px width */
+.sidebar h3 {
+    margin: 0 0 1.25rem;
 }
 
-/* Update your collapsed rule as well to make sure it plays nice with the lock */
+.archive-heading {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.archive-heading h3 {
+    margin-bottom: 0;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+}
+
+.project-count {
+    color: var(--muted);
+    font-size: 0.75rem;
+    padding-top: 0.4rem;
+    white-space: nowrap;
+}
+
+.search-label {
+    color: var(--muted);
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 1rem 0 0.4rem;
+}
+
+.project-search {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font: inherit;
+    padding: 0.7rem 0.8rem;
+    width: 100%;
+}
+
+.project-search::placeholder {
+    color: #71819c;
+}
+
+.project-search:focus {
+    border-color: var(--accent);
+    outline: 2px solid rgba(85, 214, 190, 0.2);
+}
+
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 1rem 0;
+}
+
+.category-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.65rem;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--background);
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 .sidebar.collapsed {
+    border-right: 0;
+    padding-left: 0;
+    padding-right: 0;
     width: 0;
-    padding: 25px 0;
-    border-right: none;
-    flex-shrink: 0; /* Keeps it locked at 0 when closed */
 }
 
-/* Hide text when collapsed */
 .sidebar.collapsed .sidebar-content {
     opacity: 0;
-    pointer-events: none; /* Stops users from accidentally clicking invisible links */
+    pointer-events: none;
 }
 
-/* Toggle Buttons */
-.toggle-btn, .floating-toggle-btn {
-    background: none;
-    border: none;
-    color: #00b37e;
-    font-size: 1.5rem;
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 230px;
+    opacity: 1;
+    transition: opacity 120ms ease;
+}
+
+.toggle-btn,
+.floating-toggle-btn {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
     cursor: pointer;
-    padding: 5px 10px;
-    transition: color 0.2s;
-}
-
-.toggle-btn:hover, .floating-toggle-btn:hover {
-    color: #ffffff;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0.6rem 0.75rem;
 }
 
 .toggle-btn {
     align-self: flex-end;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 }
 
-/* Floating button that appears only when sidebar vanishes */
+.toggle-btn:hover,
+.floating-toggle-btn:hover {
+    background: var(--accent);
+    color: var(--background);
+}
+
 .floating-toggle-btn {
     display: none;
+    left: 1.25rem;
     position: absolute;
-    top: 20px;
-    left: 20px;
-    background-color: #1a1a1e;
-    border: 1px solid #29292e;
-    border-radius: 4px;
-    z-index: 10;
+    top: 1.25rem;
+    z-index: 2;
 }
 
 .floating-toggle-btn.visible {
     display: block;
 }
 
-/* Sidebar Buttons */
 .sidebar-btn {
-    background: none;
-    border: none;
-    color: #a8a8b3;
-    text-align: left;
-    padding: 12px 15px;
-    font-size: 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--muted);
     cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+    font: inherit;
+    margin: 0.2rem 0;
+    padding: 0.75rem 0.85rem;
+    text-align: left;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
-.sidebar-btn:hover {
-    background-color: #202024;
-    color: #ffffff;
+.sidebar-btn:hover,
+.sidebar-btn.active {
+    background: var(--surface-raised);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.sidebar-btn span,
+.sidebar-btn small {
+    display: block;
+}
+
+.sidebar-btn small {
+    color: inherit;
+    font-size: 0.72rem;
+    font-weight: 400;
+    margin-top: 0.15rem;
+    opacity: 0.75;
+}
+
+.empty-results {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: 1rem 0;
 }
 
 .sidebar-btn.active {
-    background-color: #202024;
-    color: #00b37e;
-    font-weight: bold;
-    border-left: 3px solid #00b37e;
+    border-left: 3px solid var(--accent);
+    color: var(--accent);
 }
 
 .sidebar-footer {
+    border-top: 1px solid var(--border);
     margin-top: auto;
-    padding-top: 20px;
+    padding-top: 1.25rem;
 }
 
-/* Main Screen Wrapper adjusting for absolute positioning */
 .main-content {
     flex: 1;
-    padding: 40px;
-    background-color: #121214;
-    position: relative; 
+    min-width: 0;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    position: relative;
 }
 
-/* If the layout text looks too close to the floating trigger when collapsed */
 .sidebar.collapsed + .main-content {
-    padding-left: 70px; 
-}
-
-.project-meta {
-    color: #7c7c8a;
-    font-size: 0.9rem;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid #29292e;
-    margin: 20px 0;
+    padding-left: clamp(4.5rem, 8vw, 6rem);
 }
 
 .project-view {
     display: none;
+    margin: 0 auto;
+    max-width: 980px;
 }
 
 .project-view.active-view {
+    animation: fadeIn 220ms ease;
     display: block;
-    animation: fadeIn 0.3s ease;
 }
 
-.code-link {
-    display: inline-block;
-    margin-top: 20px;
-    background-color: #202024;
-    border: 1px solid #29292e;
-    padding: 10px 20px;
-    border-radius: 4px;
-}
-
-.code-link:hover {
-    background-color: #29292e;
-    color: #00b37e;
-}
-
-
-.project-card {
-    background-color: #202024;
-    border: 1px solid #29292e;
-    padding: 20px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-}
-
-.project-card h3 {
+.project-view > h1,
+.project-view > h3:first-child {
     margin-top: 0;
-    color: #ffffff;
+}
+
+.project-view > p {
+    color: var(--muted);
+}
+
+.project-image,
+.hierarchy-image {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: block;
+    height: auto;
+    margin: 1.25rem auto;
+    max-width: 100%;
+    object-fit: contain;
 }
 
 .project-image {
-    width: 75%;
-    max-height: 350px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 15px;
+    max-height: 480px;
+    width: min(100%, 780px);
 }
 
 .hierarchy-image {
-    width: 25%;
-    height: auto;
-    max-width: 600px;
-    object-fit: contain;
-    border-radius: 4px;
-    margin-bottom: 15px;
+    width: min(100%, 600px);
 }
 
 .video-embed {
-    border: 1px solid #29292e;
-    border-radius: 6px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     display: block;
+    margin: 1.25rem auto;
+    max-width: 100%;
+    width: 720px;
 }
 
+.code-link {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.65rem 1rem;
+}
 
+.code-link:hover {
+    background: var(--accent);
+    color: var(--background);
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: 0;
+        z-index: 3;
+    }
+
+    .main-content {
+        padding: 1.25rem;
+        padding-top: 4.5rem;
+    }
+
+    .sidebar.collapsed + .main-content {
+        padding-left: 1.25rem;
+    }
 }

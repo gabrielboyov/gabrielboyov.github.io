@@ -1,102 +1,127 @@
-/* ==========================================================================
-   BASE STYLESHEET COMMON FOR ALL PAGES
-   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-/* =========
-   ELEMENTS
-   ========= */
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121214;
-    color: #e1e1e6;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
+:root {
+    color-scheme: dark;
+    --background: #0b1220;
+    --surface: #111b2e;
+    --surface-raised: #16233a;
+    --border: #263754;
+    --text: #e8eef8;
+    --muted: #9cabc2;
+    --accent: #55d6be;
+    --accent-strong: #2cbca4;
+    --focus: #9cf2e1;
+    --shadow: 0 18px 45px rgba(2, 8, 23, 0.28);
 }
 
-header {
-    text-align: center;
-    padding: 40px 0;
-    border-bottom: 1px solid #29292e;
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.2;
 }
 
 h1 {
-    color: #00b37e; /* Sleek green accent */
-    margin-bottom: 10px;
+    color: var(--text);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    letter-spacing: -0.04em;
+    margin: 0 0 0.75rem;
 }
 
 h2 {
-    color: #00b37e;
-    border-left: 4px solid #00b37e;
-    padding-left: 10px;
-    margin-bottom: 20px;
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    font-size: 1.55rem;
+    margin: 0 0 1.25rem;
+}
+
+h2::before {
+    background: var(--accent);
+    border-radius: 2px;
+    content: '';
+    height: 1.5rem;
+    width: 4px;
+}
+
+h3 {
+    color: var(--text);
 }
 
 a {
-    color: #00b37e;
+    color: var(--accent);
     text-decoration: none;
+    transition: color 160ms ease, opacity 160ms ease;
+}
+
+a:hover {
+    color: var(--focus);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
 }
 
 section {
-    margin: 40px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    margin: 1.5rem 0;
+    padding: clamp(1.25rem, 3vw, 2rem);
 }
-
 
 footer {
-    text-align: center;
-    margin-top: 60px;
-    color: #7c7c8a;
+    color: var(--muted);
     font-size: 0.9rem;
+    padding: 1rem 0 2rem;
+    text-align: center;
 }
 
-/* =========
-   CLASSES
-   ========= */
-
 .container {
-    max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
+    max-width: 980px;
+    padding: 2rem clamp(1rem, 4vw, 2.5rem);
 }
 
 .subtitle {
-    color: #a8a8b3;
-    font-size: 1.2rem;
+    color: var(--accent);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    margin: 0;
 }
 
-/* Container to make sure the embedded code behaves nicely */
-.gist {
-    width: 100%;
-    max-height: 500px; /* Limits the height so it doesn't stretch forever */
-    overflow-y: auto;  /* Adds a smooth scrollbar inside the card if code is long */
-    border-radius: 6px;
-    border: 1px solid #29292e;
-    margin-top: 15px;
-}
-
-/* Styles the custom code box container */
 .code-window {
-    background-color: #1a1a1e !important; /* Forces dark background matching your sidebar */
-    border: 1px solid #29292e;
-    border-radius: 6px;
-    padding: 15px;
-    max-height: 400px; /* Gives it a neat bounding box */
-    overflow: auto; /* Enables vertical and horizontal scrollbars automatically */
-    font-size: 0.9rem;
+    background: #0a1020 !important;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    max-height: 400px;
+    overflow: auto;
+    padding: 1rem;
 }
 
-/* =========
-   STATES
-   ========= */
-
-a:hover {
-    text-decoration: underline;
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
 }
-
-/* =========
-   IMPORTS
-   =========
-*/
-
-@import url('https://cdn.jsdelivr.net/gh/claudiomancuso/gist-dark-theme@master/gist-dark-theme.css');
